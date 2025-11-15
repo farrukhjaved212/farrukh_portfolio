@@ -1,0 +1,301 @@
+import 'package:farrukh_portfolio/pages/projectspage.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = const [
+      Color(0xFF7B88FF),
+      Color(0xFF858FFF),
+      Color(0xFF9095FF),
+      Color(0xFF9BA9FF),
+      Color(0xFFA5ADFF),
+      Color(0xFFB0B1FF),
+      Color(0xFFBAB5FF),
+      Color(0xFFC5BAFF),
+      Color(0xFFD0BEFF),
+    ];
+
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: colors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // 🔝 Navbar
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _navItem("About"),
+                  const SizedBox(width: 20),
+                  _navItem(
+                    "Projects",
+                    onTap: () => Get.to(() => const ProjectsPage()),
+                  ),
+                  const SizedBox(width: 20),
+                  _navItem("Contact"),
+                ],
+              ),
+            ),
+
+            // 💬 Hero Section (Intro)
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedTextKit(
+                      repeatForever: true,
+                      animatedTexts: [
+                        TypewriterAnimatedText(
+                          '🚀 Flutter Developer',
+                          textStyle: GoogleFonts.poppins(
+                            fontSize: 36,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          speed: const Duration(milliseconds: 120),
+                        ),
+                        TypewriterAnimatedText(
+                          '🛠 QA Engineer',
+                          textStyle: GoogleFonts.poppins(
+                            fontSize: 36,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          speed: const Duration(milliseconds: 120),
+                        ),
+                        TypewriterAnimatedText(
+                          '📱 Building Beautiful Apps & Web',
+                          textStyle: GoogleFonts.poppins(
+                            fontSize: 32,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          speed: const Duration(milliseconds: 120),
+                        ),
+                        TypewriterAnimatedText(
+                          '💼 1 Year Experience in Fintech',
+                          textStyle: GoogleFonts.poppins(
+                            fontSize: 28,
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          speed: const Duration(milliseconds: 120),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 30),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => const ProjectsPage());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                          vertical: 15,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF9BA9FF), Color(0xFFD8C2FF)],
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.4),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          "Click to see Projects",
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // 💬 Reviews + Submit Section
+            Expanded(
+              flex: 2,
+              child: Row(
+                children: [
+                  // Left side – Reviews
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Client Reviews",
+                            style: GoogleFonts.poppins(
+                              fontSize: 26,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Expanded(
+                            child: ListView(
+                              children: [
+                                _reviewCard(
+                                  "⭐️⭐️⭐️⭐️⭐️",
+                                  "Fantastic work! Exceeded my expectations.",
+                                ),
+                                _reviewCard(
+                                  "⭐️⭐️⭐️⭐️",
+                                  "Great communication and timely delivery.",
+                                ),
+                                _reviewCard(
+                                  "⭐️⭐️⭐️⭐️⭐️",
+                                  "Creative design and smooth animations!",
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Right side – Submit Review Form
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(30),
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xFFB0B1FF), Color(0xFF9BA9FF)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Submit Your Review",
+                            style: GoogleFonts.poppins(
+                              fontSize: 26,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          _inputField("Your Name"),
+                          const SizedBox(height: 10),
+                          _inputField("Your Review"),
+                          const SizedBox(height: 20),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                                vertical: 15,
+                              ),
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFF9BA9FF),
+                                    Color(0xFFD8C2FF),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Text(
+                                "Submit",
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _navItem(String title, {VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Text(
+        title,
+        style: GoogleFonts.poppins(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+          fontSize: 18,
+        ),
+      ),
+    );
+  }
+
+  Widget _reviewCard(String stars, String review) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        "$stars  $review",
+        style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
+      ),
+    );
+  }
+
+  Widget _inputField(String hint) {
+    return TextField(
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white70),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        fillColor: Colors.white.withOpacity(0.1),
+        filled: true,
+      ),
+    );
+  }
+}
+
