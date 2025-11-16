@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() {
-  setUrlStrategy(PathUrlStrategy());
+  setUrlStrategy(PathUrlStrategy()); // Clean URLs: no "/#/"
   runApp(const MyPortfolioApp());
 }
 
@@ -19,7 +19,17 @@ class MyPortfolioApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Muhammad Farrukh Javed Portfolio',
       theme: ThemeData(useMaterial3: true),
-      home: const SplashScreen(), // ✅ correct usage
+
+      // ✅ Routing setup for Flutter Web
+      initialRoute: '/',
+
+      getPages: [
+        GetPage(name: '/', page: () => const SplashScreen()),
+        GetPage(name: '/home', page: () => const HomePage()),
+        GetPage(name: '/about', page: () => const AboutPage()),
+        // You can add more routes here like:
+        // GetPage(name: '/projects', page: () => const ProjectsPage()),
+      ],
     );
   }
 }

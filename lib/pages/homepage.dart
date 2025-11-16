@@ -42,13 +42,13 @@ class HomePage extends StatelessWidget {
                 children: [
                   _navItem(
                     "Projects",
-                    onTap: () => Get.to(() => const ProjectsPage()),
+                    onTap: () => Get.toNamed('/projects'),
                     colors: colors,
                   ),
                   const SizedBox(width: 40),
                   _navItem(
                     "About",
-                    onTap: () => Get.to(() => const AboutPage()),
+                    onTap: () => Get.toNamed('/about'),
                     colors: colors,
                   ),
 
@@ -110,7 +110,7 @@ class HomePage extends StatelessWidget {
                     const SizedBox(height: 40),
                     InkWell(
                       onTap: () {
-                        Get.to(() => const ProjectsPage());
+                        Get.toNamed('/projects');
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(

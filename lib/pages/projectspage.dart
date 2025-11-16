@@ -138,7 +138,7 @@ class _ProjectsPageState extends State<ProjectsPage>
                   children: [
                     // Left: Back arrow / Dashboard
                     InkWell(
-                      onTap: () => Get.to(() => const HomePage()),
+                      onTap: () => Get.toNamed('/home'),
                       child: Row(
                         children: const [
                           Icon(
@@ -164,13 +164,13 @@ class _ProjectsPageState extends State<ProjectsPage>
                       children: [
                         _navItem(
                           "Home",
-                          onTap: () => Get.to(() => const HomePage()),
+                          onTap: () => Get.toNamed('/home'),
                           colors: colors,
                         ),
                         const SizedBox(width: 40),
                         _navItem(
                           "About",
-                          onTap: () => Get.to(() => const AboutPage()),
+                          onTap: () => Get.toNamed('/about'),
                           colors: colors,
                         ),
 

@@ -56,7 +56,8 @@ class AboutPage extends StatelessWidget {
                   children: [
                     // Left: Back arrow / Dashboard
                     InkWell(
-                      onTap: () => Get.to(() => const HomePage()),
+                      onTap: () => Get.toNamed('/home'),
+
                       child: Row(
                         children: const [
                           Icon(
@@ -82,13 +83,13 @@ class AboutPage extends StatelessWidget {
                       children: [
                         _navItem(
                           "Home",
-                          onTap: () => Get.to(() => const HomePage()),
+                          onTap: () => Get.toNamed('/home'),
                           colors: colors,
                         ),
                         const SizedBox(width: 40),
                         _navItem(
                           "Projects",
-                          onTap: () => Get.to(() => const ProjectsPage()),
+                          onTap: () => Get.toNamed('/projects'),
                           colors: colors,
                         ),
 
