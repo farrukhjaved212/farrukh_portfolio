@@ -1,5 +1,6 @@
 import 'package:farrukh_portfolio/pages/aboutpage.dart';
 import 'package:farrukh_portfolio/pages/homepage.dart';
+import 'package:farrukh_portfolio/pages/projectspage.dart';
 import 'package:farrukh_portfolio/pages/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,12 +22,13 @@ class MyPortfolioApp extends StatelessWidget {
       theme: ThemeData(useMaterial3: true),
 
       // ✅ Routing setup for Flutter Web
-      initialRoute: '/',
+      initialRoute: '/dashboard',
 
       getPages: [
-        GetPage(name: '/', page: () => const SplashScreen()),
+        GetPage(name: '/dashboard', page: () => const SplashScreen()),
         GetPage(name: '/home', page: () => const HomePage()),
         GetPage(name: '/about', page: () => const AboutPage()),
+        GetPage(name: '/projects', page: () => const ProjectsPage()),
         // You can add more routes here like:
         // GetPage(name: '/projects', page: () => const ProjectsPage()),
       ],
