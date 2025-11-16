@@ -5,33 +5,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController reviewController = TextEditingController();
-
-  // Reactive list of reviews
-  final RxList<Map<String, String>> reviews = <Map<String, String>>[
-    {
-      "stars": "⭐️⭐️⭐️⭐️⭐️",
-      "review": "Fantastic work! Exceeded my expectations.",
-    },
-    {"stars": "⭐️⭐️⭐️⭐️", "review": "Great communication and timely delivery."},
-    {"stars": "⭐️⭐️⭐️⭐️⭐️", "review": "Creative design and smooth animations!"},
-  ].obs;
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    reviewController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,31 +34,31 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Navbar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
-              child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.center, // Center navbar items
+              child: // Right: Nav Items
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  _navItem(
+                    "Home",
+                    onTap: () => Get.toNamed('/home'),
+                    colors: colors,
+                  ),
+                  const SizedBox(width: 40),
                   _navItem(
                     "Projects",
                     onTap: () => Get.toNamed('/projects'),
                     colors: colors,
                   ),
-                  const SizedBox(width: 40),
-                  _navItem(
-                    "About",
-                    onTap: () => Get.toNamed('/about'),
-                    colors: colors,
-                  ),
+
                   const SizedBox(width: 40),
                   _navItem("Contact", colors: colors),
                 ],
               ),
             ),
 
-            // Hero Section
+            // 💬 Hero Section
             Expanded(
               flex: 2,
               child: Center(
@@ -169,7 +144,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            // Client Reviews + Submit Section
+            // 💬 Client Reviews + Submit Section
             Expanded(
               flex: 2,
               child: Padding(
@@ -185,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [colors[2], colors[5]],
+                            colors: [colors[2], colors[5]], // SAME GRADIENT
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -212,17 +187,21 @@ class _HomePageState extends State<HomePage> {
                             ),
                             const SizedBox(height: 20),
                             Expanded(
-                              child: Obx(
-                                () => ListView(
-                                  children: reviews
-                                      .map(
-                                        (r) => _reviewCard(
-                                          r["stars"]!,
-                                          r["review"]!,
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
+                              child: ListView(
+                                children: [
+                                  _reviewCard(
+                                    "⭐️⭐️⭐️⭐️⭐️",
+                                    "Fantastic work! Exceeded my expectations.",
+                                  ),
+                                  _reviewCard(
+                                    "⭐️⭐️⭐️⭐️",
+                                    "Great communication and timely delivery.",
+                                  ),
+                                  _reviewCard(
+                                    "⭐️⭐️⭐️⭐️⭐️",
+                                    "Creative design and smooth animations!",
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -238,7 +217,10 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [colors[2], colors[5]],
+                            colors: [
+                              colors[2],
+                              colors[5],
+                            ], // EXACT SAME AS CLIENT REVIEWS
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -251,6 +233,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
+
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -264,51 +247,30 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            _inputField(
-                              "Your Name",
-                              controller: nameController,
-                            ),
+                            _inputField("Your Name"),
                             const SizedBox(height: 15),
-                            _inputField(
-                              "Your Review",
-                              controller: reviewController,
-                            ),
+                            _inputField("Your Review"),
                             const SizedBox(height: 25),
                             Align(
                               alignment: Alignment.centerRight,
                               child: InkWell(
                                 onTap: () {
-                                  if (nameController.text.isNotEmpty &&
-                                      reviewController.text.isNotEmpty) {
-                                    reviews.add({
-                                      "stars": "⭐️⭐️⭐️⭐️⭐️",
-                                      "review":
-                                          "${nameController.text}: ${reviewController.text}",
-                                    });
-                                    nameController.clear();
-                                    reviewController.clear();
-                                    Get.snackbar(
-                                      "Success",
-                                      "Your review has been submitted!",
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.white.withOpacity(
-                                        0.2,
-                                      ),
-                                      colorText: Colors.white,
-                                    );
-                                  } else {
-                                    Get.snackbar(
-                                      "Error",
-                                      "Please fill both fields",
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.red.withOpacity(
-                                        0.2,
-                                      ),
-                                      colorText: Colors.white,
-                                    );
-                                  }
+                                  // 👇 This is where you handle submission
+                                  print("Submit clicked");
+                                  // You can also show a snackbar for testing:
+                                  Get.snackbar(
+                                    "Success",
+                                    "Your review has been submitted!",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.white.withOpacity(
+                                      0.2,
+                                    ),
+                                    colorText: Colors.white,
+                                  );
                                 },
-                                borderRadius: BorderRadius.circular(30),
+                                borderRadius: BorderRadius.circular(
+                                  30,
+                                ), // match container
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 30,
@@ -317,7 +279,7 @@ class _HomePageState extends State<HomePage> {
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [colors[2], colors[5]],
-                                    ),
+                                    ), // same as left panel
                                     borderRadius: BorderRadius.circular(30),
                                     boxShadow: [
                                       BoxShadow(
@@ -391,11 +353,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _inputField(String hint, {TextEditingController? controller}) {
+  Widget _inputField(String hint) {
     return TextField(
-      controller: controller,
       style: const TextStyle(color: Colors.white),
-      cursorColor: Colors.white,
+      cursorColor: Colors.white, // ⬅️ Make cursor white
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
