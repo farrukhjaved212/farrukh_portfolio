@@ -5,8 +5,33 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController reviewController = TextEditingController();
+
+  // Reactive list of reviews
+  final RxList<Map<String, String>> reviews = <Map<String, String>>[
+    {
+      "stars": "⭐️⭐️⭐️⭐️⭐️",
+      "review": "Fantastic work! Exceeded my expectations.",
+    },
+    {"stars": "⭐️⭐️⭐️⭐️", "review": "Great communication and timely delivery."},
+    {"stars": "⭐️⭐️⭐️⭐️⭐️", "review": "Creative design and smooth animations!"},
+  ].obs;
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    reviewController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +59,12 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // 🔝 Navbar with extra spacing
+            // Navbar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Center navbar items
                 children: [
                   _navItem(
                     "Projects",
@@ -51,14 +77,13 @@ class HomePage extends StatelessWidget {
                     onTap: () => Get.toNamed('/about'),
                     colors: colors,
                   ),
-
                   const SizedBox(width: 40),
                   _navItem("Contact", colors: colors),
                 ],
               ),
             ),
 
-            // 💬 Hero Section
+            // Hero Section
             Expanded(
               flex: 2,
               child: Center(
@@ -144,7 +169,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            // 💬 Client Reviews + Submit Section
+            // Client Reviews + Submit Section
             Expanded(
               flex: 2,
               child: Padding(
@@ -159,21 +184,15 @@ class HomePage extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(
-                            255,
-                            255,
-                            248,
-                            248,
-                          ).withOpacity(0.1),
+                          gradient: LinearGradient(
+                            colors: [colors[2], colors[5]],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color.fromARGB(
-                                255,
-                                255,
-                                255,
-                                255,
-                              ).withOpacity(0.2),
+                              color: Colors.white.withOpacity(0.2),
                               blurRadius: 15,
                               offset: const Offset(0, 5),
                             ),
@@ -193,21 +212,17 @@ class HomePage extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             Expanded(
-                              child: ListView(
-                                children: [
-                                  _reviewCard(
-                                    "⭐️⭐️⭐️⭐️⭐️",
-                                    "Fantastic work! Exceeded my expectations.",
-                                  ),
-                                  _reviewCard(
-                                    "⭐️⭐️⭐️⭐️",
-                                    "Great communication and timely delivery.",
-                                  ),
-                                  _reviewCard(
-                                    "⭐️⭐️⭐️⭐️⭐️",
-                                    "Creative design and smooth animations!",
-                                  ),
-                                ],
+                              child: Obx(
+                                () => ListView(
+                                  children: reviews
+                                      .map(
+                                        (r) => _reviewCard(
+                                          r["stars"]!,
+                                          r["review"]!,
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
                               ),
                             ),
                           ],
@@ -223,22 +238,14 @@ class HomePage extends StatelessWidget {
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [
-                              colors[2],
-                              colors[5],
-                            ], // Right panel gradient
+                            colors: [colors[2], colors[5]],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color.fromARGB(
-                                255,
-                                247,
-                                228,
-                                228,
-                              ).withOpacity(0.2),
+                              color: Colors.white.withOpacity(0.2),
                               blurRadius: 15,
                               offset: const Offset(0, 5),
                             ),
@@ -257,40 +264,75 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            _inputField("Your Name"),
+                            _inputField(
+                              "Your Name",
+                              controller: nameController,
+                            ),
                             const SizedBox(height: 15),
-                            _inputField("Your Review"),
+                            _inputField(
+                              "Your Review",
+                              controller: reviewController,
+                            ),
                             const SizedBox(height: 25),
                             Align(
                               alignment: Alignment.centerRight,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 30,
-                                  vertical: 15,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [colors[3], colors[7]],
+                              child: InkWell(
+                                onTap: () {
+                                  if (nameController.text.isNotEmpty &&
+                                      reviewController.text.isNotEmpty) {
+                                    reviews.add({
+                                      "stars": "⭐️⭐️⭐️⭐️⭐️",
+                                      "review":
+                                          "${nameController.text}: ${reviewController.text}",
+                                    });
+                                    nameController.clear();
+                                    reviewController.clear();
+                                    Get.snackbar(
+                                      "Success",
+                                      "Your review has been submitted!",
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      backgroundColor: Colors.white.withOpacity(
+                                        0.2,
+                                      ),
+                                      colorText: Colors.white,
+                                    );
+                                  } else {
+                                    Get.snackbar(
+                                      "Error",
+                                      "Please fill both fields",
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      backgroundColor: Colors.red.withOpacity(
+                                        0.2,
+                                      ),
+                                      colorText: Colors.white,
+                                    );
+                                  }
+                                },
+                                borderRadius: BorderRadius.circular(30),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 30,
+                                    vertical: 15,
                                   ),
-                                  borderRadius: BorderRadius.circular(30),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color.fromARGB(
-                                        255,
-                                        236,
-                                        192,
-                                        192,
-                                      ).withOpacity(0.2),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 5),
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [colors[2], colors[5]],
                                     ),
-                                  ],
-                                ),
-                                child: Text(
-                                  "Submit",
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    borderRadius: BorderRadius.circular(30),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.white.withOpacity(0.2),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Text(
+                                    "Submit",
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -349,9 +391,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _inputField(String hint) {
+  Widget _inputField(String hint, {TextEditingController? controller}) {
     return TextField(
+      controller: controller,
       style: const TextStyle(color: Colors.white),
+      cursorColor: Colors.white,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(color: Colors.white.withOpacity(0.8)),

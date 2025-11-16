@@ -21,16 +21,13 @@ class MyPortfolioApp extends StatelessWidget {
       title: 'Muhammad Farrukh Javed Portfolio',
       theme: ThemeData(useMaterial3: true),
 
-      // ✅ Routing setup for Flutter Web
-      initialRoute: '/dashboard',
+      initialRoute: '/splashscreen',
 
       getPages: [
-        GetPage(name: '/dashboard', page: () => const SplashScreen()),
+        GetPage(name: '/splashscreen', page: () => const SplashScreen()),
         GetPage(name: '/home', page: () => const HomePage()),
         GetPage(name: '/about', page: () => const AboutPage()),
         GetPage(name: '/projects', page: () => const ProjectsPage()),
-        // You can add more routes here like:
-        // GetPage(name: '/projects', page: () => const ProjectsPage()),
       ],
     );
   }
