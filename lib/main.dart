@@ -3,8 +3,10 @@ import 'package:farrukh_portfolio/pages/homepage.dart';
 import 'package:farrukh_portfolio/pages/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() {
+  setUrlStrategy(PathUrlStrategy());
   runApp(const MyPortfolioApp());
 }
 
